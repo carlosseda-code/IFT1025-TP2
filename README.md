@@ -1,2 +1,1 @@
-# IFT1025-TP2
-Application Java client-serveur qui permet aux étudiants de s’inscrire aux cours.
+# IFT1025-TP2-server
