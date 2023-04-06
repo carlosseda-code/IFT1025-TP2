@@ -16,7 +16,14 @@ import java.util.Arrays;
  */
 public class Server {
 
+    /**
+     * Constante, relié à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir
+     */
     public final static String REGISTER_COMMAND = "INSCRIRE";
+
+    /**
+     * Constante, relié à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir
+     */
     public final static String LOAD_COMMAND = "CHARGER";
     private final ServerSocket server;
     private Socket client;
@@ -45,12 +52,6 @@ public class Server {
         this.handlers.add(h);
     }
 
-    /**
-     * Méthode qui traite une commande et son argument par un gestionnaire d'événement contenu dans la liste de
-     * gestionnaires d'événements
-     * @param cmd Commande à traiter
-     * @param arg Argument(s) associé(s) à la commande à traiter
-     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
@@ -148,4 +149,3 @@ public class Server {
         // TODO: implémenter cette méthode
     }
 }
-
