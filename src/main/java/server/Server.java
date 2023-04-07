@@ -102,12 +102,14 @@ public class Server {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("src/main/java/server/data/cours.txt"));
             List<Course> courses = new ArrayList<>();
-            
+
+            // Pour tout les cours disponibles:
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\t");
+                // Filtre: conserver seulement les cours de la session specifiee dans le 'arg'
                 if (parts[2].equals(arg)) {
-                    Course course = new Course(parts[0], parts[1], parts[2]);
+                    Course course = new Course(parts[1], parts[0], parts[2]);
                     courses.add(course);
                 }
             }
@@ -115,6 +117,7 @@ public class Server {
             
             objectOutputStream.writeObject(courses);
             objectOutputStream.flush();
+            objectOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,18 +131,20 @@ public class Server {
     public void handleRegistration() {
         try {
             RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
-            
+
+            // Transferer les informations d'inscriptions dans le fichier inscription.txt:
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter("src/main/java/server/data/inscription.txt", true));
             fileWriter.write(registrationForm.getCourse().getSession() + "\t" +
                          registrationForm.getCourse().getCode() + "\t" +
                          registrationForm.getMatricule() + "\t" +
-                         registrationForm.getNom() + "\t" +
                          registrationForm.getPrenom() + "\t" +
+                         registrationForm.getNom() + "\t" +
                          registrationForm.getEmail() + "\n");
             fileWriter.close();
             
             objectOutputStream.writeObject("Félicitations ! Inscription réussie.");
             objectOutputStream.flush();
+            objectOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
