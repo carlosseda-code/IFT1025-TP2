@@ -99,6 +99,7 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
     public void handleLoadCourses(String arg) {
+        // TODO: implémenter cette méthode
         try {
             BufferedReader reader = new BufferedReader(new FileReader("src/main/java/server/data/cours.txt"));
             List<Course> courses = new ArrayList<>();
@@ -129,6 +130,7 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
+        // TODO: implémenter cette méthode
         try {
             RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
 
