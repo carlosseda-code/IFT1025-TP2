@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="aad85a9e-3f45-47a9-89c4-b04a5904b088" name="Changes" comment="" />
+=======
+    <list default="true" id="aad85a9e-3f45-47a9-89c4-b04a5904b088" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+>>>>>>> main
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,6 +39,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -43,6 +50,15 @@
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/victo/IFT1025-TP2&quot;
+  }
+}</component>
+>>>>>>> main
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="IFT1025-TP2" />
@@ -61,7 +77,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
       <changelist id="aad85a9e-3f45-47a9-89c4-b04a5904b088" name="Changes" comment="" />
+=======
+      <changelist id="7f809e85-2ccb-40b7-b9ac-2720f270d88d" name="Changes" comment="" />
+>>>>>>> main
       <created>1680508296922</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

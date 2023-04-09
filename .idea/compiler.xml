@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+<<<<<<< HEAD
+=======
+    <bytecodeTargetLevel>
+      <module name="Server" target="11" />
+    </bytecodeTargetLevel>
+>>>>>>> main
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -9,8 +15,11 @@
         <module name="Server" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel>
       <module name="Server" target="11" />
     </bytecodeTargetLevel>
+=======
+>>>>>>> main
   </component>
 </project>
