@@ -2,6 +2,10 @@ package server;
 
 import javafx.util.Pair;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,6 +13,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import server.models.Course;
+import server.models.RegistrationForm;
 
 /**
  * Classe qui représente un serveur qui porte sur l'inscription d'un client à un cours et qui traite les commandes d'un
@@ -137,7 +145,28 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
     public void handleLoadCourses(String arg) {
-        // TODO: implémenter cette méthode
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("src/main/java/server/data/cours.txt"));
+            List<Course> courses = new ArrayList<>();
+
+            // Pour tout les cours disponibles:
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\t");
+                // Filtre: conserver seulement les cours de la session specifiee dans le 'arg'
+                if (parts[2].equals(arg)) {
+                    Course course = new Course(parts[1], parts[0], parts[2]);
+                    courses.add(course);
+                }
+            }
+            reader.close();
+            
+            objectOutputStream.writeObject(courses);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -146,6 +175,24 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
+        try {
+            RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
+
+            // Transferer les informations d'inscriptions dans le fichier inscription.txt:
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter("src/main/java/server/data/inscription.txt", true));
+            fileWriter.write(registrationForm.getCourse().getSession() + "\t" +
+                         registrationForm.getCourse().getCode() + "\t" +
+                         registrationForm.getMatricule() + "\t" +
+                         registrationForm.getPrenom() + "\t" +
+                         registrationForm.getNom() + "\t" +
+                         registrationForm.getEmail() + "\n");
+            fileWriter.close();
+            
+            objectOutputStream.writeObject("Félicitations ! Inscription réussie.");
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
