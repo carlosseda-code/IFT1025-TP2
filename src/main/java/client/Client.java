@@ -36,7 +36,7 @@ public class Client {
             System.out.println("*** Bienvenue au portail d'inscription de cours de l'UDEM ***");
 
             /*
-             * Utilisation de deux "Labeled Loop" afin de pouvoir sauter a des points precis afin de pouvoir repeter le
+             * Utilisation de deux "Labeled Loop" afin de pouvoir sauter a des points precis pour pouvoir repeter le
              * code depuis ces points
              * SOURCE: https://www.javatpoint.com/labeled-loop-in-java
              */
@@ -44,7 +44,8 @@ public class Client {
             // Boucle qui assure que l'utilisateur entre un choix valide pour la session:
             sessionLoop:
             while (true) {
-                System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
+                System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des " +
+                                    "cours:");
                 System.out.println("1. Automne\n2. Hiver\n3. Ete");
                 System.out.print("> Choix: ");
 
@@ -140,10 +141,13 @@ public class Client {
                             throw new NoSuchElementException("Class not given during this semester");
 
                         } else {
-                            // Creer une connection avec le serveur, on utilise try-catch pour assurer la fermeture des ressources
+                            // Creer une connection avec le serveur, on utilise try-catch pour assurer la fermeture des
+                            // ressources
                             try (Socket socket2 = new Socket(SERVER_IP, SERVER_PORT);
-                                 ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(socket2.getOutputStream());
-                                 ObjectInputStream objectInputStream2 = new ObjectInputStream(socket2.getInputStream())) {
+                                 ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(
+                                         socket2.getOutputStream());
+                                 ObjectInputStream objectInputStream2 = new ObjectInputStream(
+                                         socket2.getInputStream())) {
 
                                 RegistrationForm registrationForm = new RegistrationForm(firstName, lastName,
                                         email, matricule, new Course("", courseCode, session));
@@ -184,7 +188,8 @@ public class Client {
             System.out.println("\nERREUR: Une erreur est survenue lors de la communication avec le serveur. " +
                     "\nVeuillez réessayer plus tard.");
         } catch (ClassNotFoundException e) {
-            System.out.println("\nERREUR: Une erreur est survenue lors de la réception des données: classe introuvable.");
+            System.out.println("\nERREUR: Une erreur est survenue lors de la réception des données: " +
+                    "classe introuvable.");
         }
     }
 }
