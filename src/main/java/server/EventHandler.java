@@ -1,11 +1,17 @@
 package server;
 
 /**
- * Interface fonctionnelle associé à la gestion d'événements, contient une unique méthode <code>handle</code> qui
- * prends en paramètre deux <code>String</code> représentant la commande 'cmd' et l'argument 'arg' associé à cette
- * commande.
+ * Interface fonctionnelle associée à la gestion d'événements. Elle contient une unique méthode <code>handle</code> qui
+ * s'occupe de la gestion d'un événement.
  */
 @FunctionalInterface
 public interface EventHandler {
+    /**
+     * Méthode unique de l'interface fonctionnelle <code>EventHandler</code> qui est appelé lorsqu'un événement, composé
+     * d'une commande et de son argument, doit être géré.
+     *
+     * @param cmd La commande associée à l'événement.
+     * @param arg L'argument associé à la commande.
+     */
     void handle(String cmd, String arg);
 }

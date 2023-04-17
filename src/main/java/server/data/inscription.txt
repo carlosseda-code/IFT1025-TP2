@@ -1,2 +1,4 @@
 Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca
 Hiver	IFT2125	123985	charles	brown	carlostest@gmail.com
+Automne	IFT1227	31415992	Hope 	This Works	plz@imbeggin.com
+Hiver	IFT1025	12345678	Again	Test	Work@gmail.com

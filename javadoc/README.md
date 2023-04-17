@@ -1,2 +1,7 @@
 # Documentation du projet
-Ce dossier doit contenir la version web de votre documentation javadoc pour le projet.
+--------------------------------
+<h4>Page principale, client:\
+javadoc/client/client_mvc/package-summary.html</h4>
+
+<h4>Page principale, serveur: \
+javadoc/serveur/server/package-summary.html</h4>

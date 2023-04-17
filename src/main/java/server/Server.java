@@ -2,13 +2,7 @@ package server;
 
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -25,12 +19,12 @@ import server.models.RegistrationForm;
 public class Server {
 
     /**
-     * Constante, relié à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir
+     * Constante reliée à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir.
      */
     public final static String REGISTER_COMMAND = "INSCRIRE";
 
     /**
-     * Constante, relié à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir
+     * Constante reliée à la gestion d'événements, qui contient une des commandes dont le programme s'attend à recevoir.
      */
     public final static String LOAD_COMMAND = "CHARGER";
     private final ServerSocket server;
@@ -41,9 +35,10 @@ public class Server {
 
     /**
      * Constructeur de la classe <code>Server</code> qui permet d'avoir une communication potentielle avec un client et
-     * qui sauvegarde les différents gestionnaires d'événements qui pouront être appelés
-     * @param port Le port sur lequel une intercommunication pontentille peut se former entre le serveur et le client.
-     * @throws IOException si une erreur survient à l'ouverture du socket
+     * qui sauvegarde les différents gestionnaires d'événements qui pourront être appelés.
+     *
+     * @param port Le port sur lequel une intercommunication potentielle peut se former entre le serveur et le client.
+     * @throws IOException si une erreur survient à l'ouverture du socket.
      */
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
@@ -54,6 +49,7 @@ public class Server {
     /**
      * Méthode qui ajoute un gestionnaire d'événement (ce qui gère les commandes que le serveur reçoit du client) à la
      * liste de gestionnaires d'événements.
+     *
      * @param h Le gestionnaire d'événement à ajouter à la liste.
      */
     public void addEventHandler(EventHandler h) {
@@ -87,9 +83,10 @@ public class Server {
 
     /**
      * Méthode qui, lorsqu'une commande est générée par le client, décompose la commande puis appelle l'avertisseur des
-     * gestions d'événements pour traiter la commande
-     * @throws IOException si une erreur survient lors de la lecture du fichier
-     * @throws ClassNotFoundException si la classe qu'on désérialise n'existe pas dans le programme
+     * gestions d'événements pour traiter la commande.
+     *
+     * @throws IOException si une erreur survient lors de la lecture du fichier.
+     * @throws ClassNotFoundException si la classe qu'on désérialise n'existe pas dans le programme.
      */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
@@ -102,9 +99,10 @@ public class Server {
     }
 
     /**
-     * Méthode qui décompose une ligne de commande en sa composante commande et sa composante arguments
-     * @param line La ligne de commande à décomposer
-     * @return retourne une paire dont le premier élément est la commande et le deuxième, les arguments de la commande
+     * Méthode qui décompose une ligne de commande en sa composante commande et sa composante arguments.
+     *
+     * @param line La ligne de commande à décomposer.
+     * @return Une paire dont le premier élément est la commande et le deuxième, les arguments de la commande.
      */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
@@ -115,8 +113,9 @@ public class Server {
 
     /**
      * Méthode qui met fin au serveur.
-     * @throws IOException si une erreur survient lors de la fermeture du ObjectOutputStream, du ObjectInputStream ou du
-     * Socket
+     *
+     * @throws IOException si une erreur survient lors de la fermeture de l'ObjectOutputStream, de l'ObjectInputStream
+     * ou du Socket.
      */
     public void disconnect() throws IOException {
         objectOutputStream.close();
@@ -125,9 +124,10 @@ public class Server {
     }
 
     /**
-     * Méthode qui applique le gestionnaire d'événement associé à une certaine commande
-     * @param cmd La commande à traiter
-     * @param arg L'argument associé à la commande
+     * Méthode qui applique le gestionnaire d'événement associé à une certaine commande.
+     *
+     * @param cmd La commande à traiter.
+     * @param arg L'argument associé à la commande.
      */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
@@ -137,62 +137,126 @@ public class Server {
         }
     }
 
+
     /**
-     Lire un fichier texte contenant des informations sur les cours et les transofmer en liste d'objets 'Course'.
-     La méthode filtre les cours par la session spécifiée en argument.
-     Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
-     @param arg la session pour laquelle on veut récupérer la liste des cours
-     @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
+     * Méthode qui, depuis un fichier texte contenant des informations sur les cours, retourne au client une liste des
+     * cours offerts pour une session spécifique.
+     *
+     * @param arg La session pour laquelle on veut récupérer la liste des cours.
      */
     public void handleLoadCourses(String arg) {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("src/main/java/server/data/cours.txt"));
+        /*
+         * Utilisation d'un "try-with-resources", donc un try qui comprend une ressource entre parentheses qui assure
+         * la fermeture de la ressource peu importe si le try se termine normalement ou non (agit un peu comme le
+         * "finally", mais plus court, plus propre et automatique)
+         * SOURCE: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+         * -> Pas besoin d'inclure: "reader.close();", car fermeture automatique à la sortie du try.
+         */
+        try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")
+                + "/cours.txt"))){
+
+            // Verifier si le fichier est vide (ne contient rien du tout)
+            if (reader.readLine() == null) {
+                System.out.print("\nERREUR: Le fichier cours.txt est vide.");
+                throw new EOFException("Le fichier cours.txt est vide");
+            }
+
+            // Supposer que le fichier est vide de caracteres:
+            boolean courseFileIsEmpty = true;
+
+            // Le fichier cours.txt doit se retrouver dans le même dossier que le jar
             List<Course> courses = new ArrayList<>();
 
-            // Pour tout les cours disponibles:
+            // Pour tous les cours disponibles:
             String line;
             while ((line = reader.readLine()) != null) {
+
+                // Sauter les lignes vides
+                if (line.trim().isBlank()){
+                    continue;
+                } else { // Ligne non-vide, donc fichier non-vide
+                    courseFileIsEmpty = false;
+                }
+
                 String[] parts = line.split("\t");
+
+                // Verifier le format de 'cours.txt'
+                for (String part : parts) {
+                    if (parts.length != 3) {
+                        System.out.println("\nERREUR: Le fichier cours.txt ne respecte pas le bon format à la ligne:");
+                        System.out.println("'" + line + "'");
+                        System.out.println("-> Chaque ligne doit contenir trois sections séparés par des tabulations");
+                        throw new IllegalArgumentException("Ligne mal formatée dans 'cours.txt': " + line);
+                    }
+                    if (part.contains(" ")) {
+                        System.out.println("\nERREUR: Le fichier cours.txt ne respecte pas le bon format à la ligne:");
+                        System.out.println("'" + line + "'");
+                        System.out.println("-> Le contenu des trois sections ne devrait pas contenir d'espaces." +
+                                           " Remplacez-les par des '_'.");
+                        throw new IllegalArgumentException("Ligne mal formatée dans 'cours.txt': " + line);
+                    }
+                }
+
                 // Filtre: conserver seulement les cours de la session specifiee dans le 'arg'
                 if (parts[2].equals(arg)) {
                     Course course = new Course(parts[1], parts[0], parts[2]);
                     courses.add(course);
                 }
             }
-            reader.close();
-            
-            objectOutputStream.writeObject(courses);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            if (courseFileIsEmpty) {
+                System.out.print("\nERREUR: Le fichier cours.txt est vide.");
+                throw new EOFException("Le fichier cours.txt est vide");
+            } else {
+                objectOutputStream.writeObject(courses);
+                objectOutputStream.flush();
+                objectOutputStream.close();
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("\nERREUR: Le fichier cours.txt qui contient la liste des cours est manquant.\n");
+            System.out.println("Veuillez vous assurer que le fichier est bien placé dans " +
+                                "\nle même répertoire que le server.jar avant d'exécuter le serveur.\n");
+        } catch (IOException e) { // Traite aussi EOFException
+            System.out.println("\nERREUR: Une erreur est survenue lors de l'entrée ou la sortie de données.\n");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Veuillez corriger le format du fichier.\n");
         }
     }
 
+
     /**
-     Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
-     et renvoyer un message de confirmation au client.
-     @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     * Méthode qui, depuis un formulaire d'inscription envoyé par le client, prend en note l'inscription du client dans
+     * un fichier texte, puis renvoie un message de confirmation au client.
      */
     public void handleRegistration() {
-        try {
+        /*
+        * Utilisation d'un "try-with-resources" expliqué dans la méthode précédante (handleLoadCourses).
+        * -> Pas besoin d'inclure: "fileWriter.close();", car fermeture automatique à la sortie du try.
+        */
+        try(BufferedWriter fileWriter = new BufferedWriter(new FileWriter(System.getProperty("user.dir")
+                + "/inscription.txt", true))) {
+
             RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
 
+            // Le fichier inscription.txt doit se retrouver dans le même dossier que le jar
             // Transferer les informations d'inscriptions dans le fichier inscription.txt:
-            BufferedWriter fileWriter = new BufferedWriter(new FileWriter("src/main/java/server/data/inscription.txt", true));
             fileWriter.write(registrationForm.getCourse().getSession() + "\t" +
                          registrationForm.getCourse().getCode() + "\t" +
                          registrationForm.getMatricule() + "\t" +
                          registrationForm.getPrenom() + "\t" +
                          registrationForm.getNom() + "\t" +
                          registrationForm.getEmail() + "\n");
-            fileWriter.close();
             
-            objectOutputStream.writeObject("Félicitations ! Inscription réussie.");
+            objectOutputStream.writeObject("Félicitations! Inscription réussie de " + registrationForm.getPrenom() +
+                                            " au cours " + registrationForm.getCourse().getCode() + ".");
             objectOutputStream.flush();
             objectOutputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("\nERREUR: Une erreur est survenue lors de l'entrée ou la sortie de données.\n");
+        } catch (ClassNotFoundException e) {
+            System.out.println("\nERREUR: Une erreur est survenue lors de la réception des données: " +
+                                "classe introuvable.\n");
         }
     }
 }
